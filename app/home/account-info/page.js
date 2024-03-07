@@ -19,7 +19,7 @@ function AccountInfo() {
   if (userData == null) return <Loading />;
 
   return (
-    <div className="w-full h-full p-2 flex flex-col space-y-2 overflow-y-auto">
+    <div className="w-full h-full p-2 flex flex-col justify-center items-center space-y-2 overflow-y-auto">
       <center>
         <h2>Account-info</h2>
       </center>

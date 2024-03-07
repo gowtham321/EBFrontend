@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { useEffect, useState } from "react";
 import {
@@ -166,7 +165,7 @@ function BillTable({ meterId, setTable, setselectedMeter }) {
             <StyledTable aria-label="bill table">
               <TableHead>
                 <StyledTableRow>
-                  <StyledTableCell>Bill id</StyledTableCell>
+                  <StyledTableCell>S.No</StyledTableCell>
                   <StyledTableCell>Bill amount</StyledTableCell>
                   <StyledTableCell>Reading</StyledTableCell>
                   <StyledTableCell>Status</StyledTableCell>
@@ -187,7 +186,9 @@ function BillTable({ meterId, setTable, setselectedMeter }) {
                       </StyledTableCell>
                       <StyledTableCell>{bill.penaltyamount}</StyledTableCell>
                       <StyledTableCell>
-                        {getFormattedDate(bill.billGenereatedTime)}
+                        {bill.billGenereatedTime != null
+                          ? getFormattedDate(bill.billGenereatedTime)
+                          : "Bill to be generated"}
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}

@@ -6,8 +6,11 @@ import { LoadingButton } from "@mui/lab";
 import { useRouter } from "next/navigation";
 import { login } from "../services/baseServices";
 import { fetcher } from "../services/baseServices";
+import { message } from "antd";
 
 function Login() {
+  const [messageApi, contextHolder] = message.useMessage();
+
   const router = useRouter();
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
@@ -15,6 +18,7 @@ function Login() {
 
   return (
     <div className="flex w-screen h-screen flex-row p-2">
+      {contextHolder}
       <div className="flex flex-col w-1/2 h-full justify-center items-center rounded-lg">
         <h2 className="text-7xl font-mono font-thin m-2">#Login.</h2>
         <form className="flex flex-col w-1/2  space-y-7 justify-top">
@@ -42,21 +46,29 @@ function Login() {
             <LoadingButton
               onClick={(e) => {
                 sethasInitiatedLogin(true);
-                login(username, password).then((status) => {
-                  sethasInitiatedLogin(false);
-                  if (status === 200) {
-                    fetcher({
-                      endPoint: "Admin/is-admin",
-                      method: "GET",
-                    }).then((res) => {
-                      if (res.ok) {
-                        router.push("/admin/dashboard");
-                      } else {
-                        router.push("/home/currentbills");
-                      }
-                    });
-                  }
-                });
+                login(username, password)
+                  .then((status) => {
+                    sethasInitiatedLogin(false);
+                    if (status === 200) {
+                      fetcher({
+                        endPoint: "Admin/is-admin",
+                        method: "GET",
+                      }).then((res) => {
+                        if (res.ok) {
+                          router.push("/admin/dashboard");
+                        } else {
+                          router.push("/home/currentbills");
+                        }
+                      });
+                    }
+                    if (status == 401) {
+                      messageApi.open({
+                        type: "error",
+                        content: "Incorrect password or username",
+                      });
+                    }
+                  })
+                  .catch((err) => console.log(err));
               }}
               loading={hasInitiatedLogin}
               variant="outlined"
